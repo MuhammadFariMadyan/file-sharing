@@ -4,6 +4,11 @@
 <div class="col-md-12">
     <h4 class="tittle-w3layouts">{{ $title }}</h4>
     <hr>
+
+    <div class="row">
+        @include('partials.ads.responsive')
+    </div>
+
     <form action="{{ route('upload.upload') }}" role="form" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         {{ method_field('post') }}

@@ -30,7 +30,13 @@
 			<h5 style="margin-top: 20px">Total Downloads: {{ $file->downloads_count }}  {{ $file->downloads_count <= 1 ? 'time' : 'times' }}</h5>
 		</div>
 
-		<div class="clearfix" style="margin-bottom: 50px"></div>
+		<div class="clearfix" style="margin-bottom: 20px"></div>
+
+		<div class="row">
+			@include('partials.ads.responsive')
+		</div>
+
+		<div class="clearfix" style="margin-bottom: 20px"></div>
 
 		<hr>
 		<div class="form-group">
