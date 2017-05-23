@@ -5,7 +5,7 @@
     <h4 class="tittle-w3layouts">{{ $title }}</h4>
     <hr>
 
-    <div class="row">
+    <div class="text-center" style="margin-bottom: 10px;">
         @include('partials.ads.responsive')
     </div>
 
