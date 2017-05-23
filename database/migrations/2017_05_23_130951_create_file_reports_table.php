@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFileDownloadsTable extends Migration
+class CreateFileReportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreateFileDownloadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('file_downloads', function (Blueprint $table) {
+        Schema::create('file_reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuid('uuid')->unique();
             $table->unsignedInteger('file_id');
             $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->string('name', 50)->nullable()->default(null);
+            $table->string('email', 100)->nullable()->default(null);
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class CreateFileDownloadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('file_downloads');
+        Schema::dropIfExists('file_reports');
     }
 }
