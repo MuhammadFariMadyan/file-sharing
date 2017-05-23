@@ -2,13 +2,19 @@
 
 namespace App;
 
+use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 
-class FileDownload extends Model
+class FileReport extends Model
 {
+    use Uuid;
+
     protected $fillable = [
         'file_id',
         'user_id',
+        'name',
+        'email',
+        'message',
     ];
 
     protected $casts = [
@@ -18,6 +24,6 @@ class FileDownload extends Model
 
     public function file()
     {
-        return $this->hasMany(File::class);
+        return $this->belongsTo(File::class);
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\File;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadRequest extends FormRequest
+class ReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +24,16 @@ class UploadRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'label' => 'required|string|max:50',
-            'file' => 'required|file|max:' . config('file.max'),
+        $rules = [
+            'uuid' => 'required|exists:files,uuid',
+            'message' => 'required|string',
         ];
+
+        if (!Auth::check()) {
+            $rules['name'] = 'required|string|max:50';
+            $rules['email'] = 'required|email|max:100';
+        }
+
+        return $rules;
     }
 }

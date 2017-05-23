@@ -27,11 +27,16 @@ class File extends Model
         'download',
         'size',
         'extension',
+        'is_image',
+    ];
+
+    protected $casts = [
+        'is_private' => 'boolean',
     ];
 
     public function getDownloadAttribute()
     {
-        return route('file.download', [$this->attributes['uuid']]);
+        return route('file.view', [$this->attributes['uuid']]);
     }
 
     public function getSizeAttribute()
@@ -44,9 +49,19 @@ class File extends Model
         return \Storage::mimeType($this->attributes['path']);
     }
 
+    public function getIsImageAttribute()
+    {
+        return substr(\Storage::mimeType($this->attributes['path']), 0, 5) == 'image';
+    }
+
     public function downloads()
     {
         return $this->hasMany(FileDownload::class);
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(FileReport::class);
     }
 
     public function user()

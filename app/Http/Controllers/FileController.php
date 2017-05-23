@@ -17,6 +17,7 @@ class FileController extends Controller
             ->when(request('query'), function ($query) {
                 return $query->where('label', 'like', '%' . request('query') . '%');
             })
+            ->whereIsPrivate(0)
             ->withCount('downloads')
             ->paginate(20);
 
@@ -29,8 +30,13 @@ class FileController extends Controller
     public function me()
     {
         $files = File::whereUserId(Auth::id())
+            ->when(request('query'), function ($query) {
+                return $query->where('label', 'LIKE', '%' . request('query') . '%');
+            })
             ->orderBy('created_at', 'DESC')
             ->paginate(20);
+
+        $files->appends(request()->all());
 
         return view('file.me', compact('files'))
             ->withTitle('My Uploaded Files');
@@ -50,7 +56,12 @@ class FileController extends Controller
             return redirect()->route('password.form', $file->uuid);
         }
 
-        return view('file.view', compact('file'))
+        // create direct path if file is image
+        if ($file->is_image) {
+            $imagePath = preg_replace('/\/{2,}/', '/', asset(Storage::url($file->path)));
+        }
+
+        return view('file.view', compact('file', 'imagePath'))
             ->withTitle($file->label);
     }
 
@@ -69,6 +80,7 @@ class FileController extends Controller
         // increment total download
         FileDownload::create([
             'file_id' => $file->id,
+            'user_id' => Auth::check() ? Auth::id() : null,
         ]);
 
         return response()->download(Storage::getDriver()

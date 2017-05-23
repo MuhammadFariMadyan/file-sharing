@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\File;
 use App\Http\Requests\UploadRequest;
 use Auth;
+use Carbon\Carbon;
 use Crypt;
+use File as FileManager;
 use Session;
 
 class UploadController extends Controller
@@ -18,8 +20,13 @@ class UploadController extends Controller
 
     public function upload(UploadRequest $request)
     {
+        $path = sprintf('public/%s/', Carbon::now()->format('Y/m/d/'));
+        if (FileManager::isDirectory(storage_path($path))) {
+            FileManager::makeDirectory(storage_path($path), 0777, true);
+        }
+
         // upload file first
-        $path = $request->file->store('public');
+        $path = $request->file->store($path);
 
         // store to database
         $file = new File;
@@ -35,8 +42,8 @@ class UploadController extends Controller
         }
 
         $file->label = $request->label;
-        $file->description = $request->description;
         $file->path = $path;
+        $file->is_private = (bool) $request->private;
         $file->save();
 
         // setup authorize access

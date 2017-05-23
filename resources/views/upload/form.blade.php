@@ -5,9 +5,11 @@
     <h4 class="tittle-w3layouts">{{ $title }}</h4>
     <hr>
 
-    <div class="text-center" style="margin-bottom: 10px;">
-        @include('partials.ads.responsive')
-    </div>
+    @if (app()->environment('production'))
+        <div class="text-center" style="margin-bottom: 10px;">
+            @include('partials.ads.responsive')
+        </div>
+    @endif
 
     <form action="{{ route('upload.upload') }}" role="form" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
@@ -17,6 +19,14 @@
             <label for="file">File <small>Max file size is {{ config('file.max') }} kb</small></label>
             <input name="file" type="file" class="">
             <span class="help-block">{{ $errors->first('file') }}</span>
+        </div>
+
+        <div class="form-group {{ $errors->has('private') ? 'has-error': '' }}">
+            <div class="checkbox">
+                <label>
+                    <input name="private" type="checkbox" value="1">Make this file private</a>
+                </label>
+            </div
         </div>
 
         <div class="form-group {{ $errors->has('label') ? 'has-error': '' }}">
@@ -31,24 +41,15 @@
             <span class="help-block">{{ $errors->first('password') }}</span>
         </div>
 
-        <div class="form-group {{ $errors->has('description') ? 'has-error': '' }}">
-            <label for="description">Description</label>
-            <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
-            <span class="help-block">{{ $errors->first('description') }}</span>
+        <div class="form-group {{ $errors->has('tos') ? 'has-error': '' }}">
+            <p>By upload file, you must agree to the <a type="button" data-toggle="modal" data-target="#rules" href="">Terms &amp;Conditions</a>.</p>
         </div>
 
-        <div class="form-group {{ $errors->has('tos') ? 'has-error': '' }}">
-            <div class="checkbox">
-                <label>
-                <input name="tos" type="checkbox" value="1">I Agree To The <a type="button" data-toggle="modal" data-target="#rules" href="">Terms &amp;Conditions</a>
-                </label>
-                </div
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">
-                Upload File
-                </button>
-            </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">
+            Upload File
+            </button>
+        </div>
     </form>
     </div>
 </div>
@@ -66,7 +67,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
 @endsection
