@@ -21,7 +21,7 @@ class CreateFilesTable extends Migration
             $table->string('path');
             $table->string('password')->nullable()->default(null);
             $table->string('plain_password', 400)->nullable()->default(null);
-            $table->string('description', 300)->nullable();
+            $table->boolean('is_private')->default(false);
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class File extends Model
         'password',
         'plain_password',
         'path',
-        'description',
+        'is_private',
     ];
 
     protected $hidden = [
