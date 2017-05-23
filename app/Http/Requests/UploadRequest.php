@@ -25,7 +25,7 @@ class UploadRequest extends FormRequest
     {
         return [
             'label' => 'required|string|max:50',
-            'file' => 'required|max:5000',
+            'file' => 'required|max:' . config('file.max'),
             'description' => 'max:200',
             'tos' => 'accepted',
         ];

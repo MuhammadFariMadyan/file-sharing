@@ -9,7 +9,7 @@
         {{ method_field('post') }}
 
         <div class="form-group {{ $errors->has('file') ? 'has-error': '' }}">
-            <label for="file">File <small>Max file size is 500kb</small></label>
+            <label for="file">File <small>Max file size is {{ config('file.max') }} kb</small></label>
             <input name="file" type="file" class="">
             <span class="help-block">{{ $errors->first('file') }}</span>
         </div>

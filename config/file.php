@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'max' => 500, // in kb,
+    'max' => env('FILE_MAX', 1000), // in kb,
     'mimes' => [
         'image/jpeg' => 'file-image-o',
         'image/jpg' => 'file-image-o',
