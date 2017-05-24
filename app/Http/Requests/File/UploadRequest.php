@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\File;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,11 +24,10 @@ class UploadRequest extends FormRequest
      */
     public function rules()
     {
-        $size = Auth::check() ? Auth::user()->size : config('file.size');
+        $size = Auth::check() ? Auth::user()->size : config('file.max');
 
         return [
-            'label' => 'string|max:100',
-            'expiration' => 'required|integer',
+            'file' => 'required|max:' . $size,
         ];
     }
 }

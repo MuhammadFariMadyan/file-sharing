@@ -33,6 +33,7 @@ class FileController extends Controller
             ->when(request('query'), function ($query) {
                 return $query->where('label', 'LIKE', '%' . request('query') . '%');
             })
+            ->withCount('downloads')
             ->orderBy('created_at', 'DESC')
             ->paginate(20);
 
@@ -54,11 +55,6 @@ class FileController extends Controller
         $authorized = Session::get('file.' . $file->uuid);
         if (!empty($file->password) and !$authorized) {
             return redirect()->route('password.form', $file->uuid);
-        }
-
-        // create direct path if file is image
-        if ($file->is_image) {
-            $imagePath = preg_replace('/\/{2,}/', '/', asset(Storage::url($file->path)));
         }
 
         return view('file.view', compact('file', 'imagePath'))

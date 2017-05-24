@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\File;
 
-use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadRequest extends FormRequest
+class SaveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +23,8 @@ class UploadRequest extends FormRequest
      */
     public function rules()
     {
-        $size = Auth::check() ? Auth::user()->size : config('file.size');
-
         return [
-            'label' => 'string|max:100',
+            'label' => 'string|max:250',
             'expiration' => 'required|integer',
         ];
     }

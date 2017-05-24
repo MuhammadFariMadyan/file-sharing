@@ -11,6 +11,9 @@
 |
  */
 
+// @AppController
+Route::post('app/token', 'AppController@token')->name('app.token');
+
 // @FileController
 Route::get('files', 'FileController@index')->name('file.index');
 Route::get('download/{uuid}', 'FileController@download')->name('file.download');
@@ -28,6 +31,9 @@ Route::get('password/remove/{uuid}', 'PasswordController@remove')->name('passwor
 // @UploadController
 Route::get('', 'UploadController@form')->name('upload.form');
 Route::post('upload', 'UploadController@upload')->name('upload.upload');
+Route::post('upload/save', 'UploadController@save')->name('upload.save');
+Route::post('upload/size', 'UploadController@size')->name('upload.size');
+Route::post('upload/expiration', 'UploadController@expiration')->name('upload.expiration');
 
 Route::post('file/report/{uuid}', 'File\ReportController@submit')->name('report.submit');
 

@@ -2,13 +2,10 @@
 
 namespace App;
 
-use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-    use Uuid;
-
     protected $filable = [
         'uuid',
         'label',
@@ -16,6 +13,7 @@ class File extends Model
         'plain_password',
         'path',
         'is_private',
+        'expired_at',
     ];
 
     protected $hidden = [
@@ -26,8 +24,12 @@ class File extends Model
     protected $appends = [
         'download',
         'size',
-        'extension',
-        'is_image',
+        'mime',
+        'type',
+    ];
+
+    protected $dates = [
+        'expired_at',
     ];
 
     protected $casts = [
@@ -44,14 +46,14 @@ class File extends Model
         return \Storage::size($this->attributes['path']);
     }
 
-    public function getExtensionAttribute()
+    public function getMimeAttribute()
     {
         return \Storage::mimeType($this->attributes['path']);
     }
 
-    public function getIsImageAttribute()
+    public function getTypeAttribute()
     {
-        return substr(\Storage::mimeType($this->attributes['path']), 0, 5) == 'image';
+        return substr(\Storage::mimeType($this->attributes['path']), 0, 5);
     }
 
     public function downloads()
@@ -79,5 +81,16 @@ class File extends Model
         }
 
         return $file;
+    }
+
+    public static function expirations()
+    {
+        return [
+            0 => 'No expiration',
+            7 => 'One week',
+            14 => 'Two weeks',
+            30 => 'One month',
+            360 => 'One year',
+        ];
     }
 }

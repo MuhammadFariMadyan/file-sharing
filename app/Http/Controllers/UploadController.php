@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\File;
-use App\Http\Requests\UploadRequest;
+use App\Http\Requests\File\SaveRequest;
+use App\Http\Requests\File\UploadRequest;
 use Auth;
 use Carbon\Carbon;
 use Crypt;
 use File as FileManager;
+use Illuminate\Http\Request;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Uuid;
 use Session;
 
 class UploadController extends Controller
@@ -18,38 +22,88 @@ class UploadController extends Controller
             ->withTitle('Upload New File');
     }
 
+    public function expiration()
+    {
+        abort_if(!request()->ajax(), 404, 'Page not found.');
+
+        return response()->json(File::expirations());
+    }
+
+    public function size()
+    {
+        $size = Auth::check() ? Auth::user()->size : config('file.max');
+        return response()->json([
+            'size' => $size / 1000,
+            'originalSize' => $size,
+        ]);
+    }
+
     public function upload(UploadRequest $request)
     {
-        $path = sprintf('public/%s/', Carbon::now()->format('Y/m/d/'));
-        if (FileManager::isDirectory(storage_path($path))) {
-            FileManager::makeDirectory(storage_path($path), 0777, true);
+        try {
+            $uuid = Uuid::uuid4();
+        } catch (UnsatisfiedDependencyException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
         }
 
-        // upload file first
-        $path = $request->file->store($path);
+        if ($request->file('file')->isValid()) {
+            $directory = sprintf('public/%s/', Carbon::now()->format('Y/m/d'));
+            if (FileManager::isDirectory(storage_path($directory))) {
+                FileManager::makeDirectory(storage_path($directory), 0777, true);
+            }
 
-        // store to database
+            $path = $request->file->store($directory);
+
+            Session::put('file', [
+                'uuid' => $uuid->toString(),
+                'path' => $path,
+                'name' => $request->file('file')->getClientOriginalName(),
+            ]);
+
+            return response()->json([
+                'uuid' => $uuid->toString(),
+            ]);
+        }
+    }
+
+    public function save(SaveRequest $request)
+    {
+        // uploaded file
+        $uploaded = Session::get('file');
+
         $file = new File;
 
-        if (Auth::check()) {
-            $file->user_id = Auth::id();
+        if (empty($request->label)) {
+            $file->label = str_limit(Session::get('file.name'));
+        } else {
+            $file->label = str_limit($request->label, 250);
         }
 
-        // set password
+        // password manager
         if (!empty($request->password)) {
             $file->password = password_hash($request->password, PASSWORD_BCRYPT);
             $file->plain_password = Crypt::encrypt($request->password);
         }
 
-        $file->label = $request->label;
-        $file->path = $path;
+        // expiration
+        if ($request->expiration > 0) {
+            $file->expired_at = Carbon::now()->addDays($request->expiration);
+        }
+
+        $file->user_id = Auth::check() ? Auth::id() : null;
+        $file->uuid = Session::get('file.uuid');
+        $file->path = Session::get('file.path');
         $file->is_private = (bool) $request->private;
         $file->save();
 
-        // setup authorize access
         Session::put('file.' . $file->uuid, true);
 
-        return redirect()
-            ->route('file.view', $file->uuid);
+        return response()->json([
+            'status' => true,
+            'url' => route('file.view', $file->uuid),
+        ]);
     }
 }
