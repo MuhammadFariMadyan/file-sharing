@@ -1,6 +1,13 @@
 window._ = require('lodash');
 
 /**
+ * Copying text to the clipboard shouldn't be hard.
+ * It shouldn't require dozens of steps to configure or hundreds of KBs to load. 
+ * But most of all, it shouldn't depend on Flash or any bloated framework.
+ */
+window.Clipboard = require('clipboard');
+
+/**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
