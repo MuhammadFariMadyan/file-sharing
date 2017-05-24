@@ -17,11 +17,12 @@ class CreateFilesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->string('uuid');
-            $table->string('label', 50);
+            $table->string('label', 250);
             $table->string('path');
             $table->string('password')->nullable()->default(null);
             $table->string('plain_password', 400)->nullable()->default(null);
             $table->boolean('is_private')->default(false);
+            $table->dateTime('expired_at')->nullable()->default(null);
             $table->timestamps();
         });
     }
