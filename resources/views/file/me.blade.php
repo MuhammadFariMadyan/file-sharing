@@ -45,7 +45,7 @@
 						@endif
 					</h5>
 					<p>Size: {{ $file->size / 1000 }} kb, Uploaded: {{ $file->created_at->diffForHumans() }}</p>
-					<p>Total Download: {{ $file->downloads_count }} {{ $file->downloads_count <= 1 ? 'time' : 'times' }}</p>
+					<p>Total download: {{ $file->downloads_count }} {{ $file->downloads_count <= 1 ? 'time' : 'times' }}</p>
 					<p>Password:
 						@if (! empty($file->plain_password))
 							<span class="text-success">{{ Crypt::decrypt($file->plain_password) }}</span>

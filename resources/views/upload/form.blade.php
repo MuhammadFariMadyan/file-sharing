@@ -11,46 +11,8 @@
         </div>
     @endif
 
-    <form action="{{ route('upload.upload') }}" role="form" method="post" enctype="multipart/form-data">
-        {{ csrf_field() }}
-        {{ method_field('post') }}
+    <upload-form></upload-form>
 
-        <div class="form-group {{ $errors->has('file') ? 'has-error': '' }}">
-            <label for="file">File <small>Max file size is {{ config('file.max') }} kb</small></label>
-            <input name="file" type="file" class="">
-            <span class="help-block">{{ $errors->first('file') }}</span>
-        </div>
-
-        <div class="form-group {{ $errors->has('private') ? 'has-error': '' }}">
-            <div class="checkbox">
-                <label>
-                    <input name="private" type="checkbox" value="1">Make this file private</a>
-                </label>
-            </div
-        </div>
-
-        <div class="form-group {{ $errors->has('label') ? 'has-error': '' }}">
-            <label for="label">File Name</label>
-            <input name="label" type="text" class="form-control" value="{{ old('label') }}">
-            <span class="help-block">{{ $errors->first('label') }}</span>
-        </div>
-
-        <div class="form-group {{ $errors->has('password') ? 'has-error': '' }}">
-            <label for="password">Password</label>
-            <input name="password" type="password" class="form-control">
-            <span class="help-block">{{ $errors->first('password') }}</span>
-        </div>
-
-        <div class="form-group {{ $errors->has('tos') ? 'has-error': '' }}">
-            <p>By upload file, you must agree to the <a type="button" data-toggle="modal" data-target="#rules" href="">Terms &amp;Conditions</a>.</p>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">
-            Upload File
-            </button>
-        </div>
-    </form>
     </div>
 </div>
 

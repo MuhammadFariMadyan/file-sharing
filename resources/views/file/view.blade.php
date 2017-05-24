@@ -6,6 +6,13 @@
 	<div class="text-center">
 		<h2>Your file is ready!</h2>
 		<hr>
+
+		@if (! empty($file->expired_at))
+			<div class="alert alert-warning">
+				<p>This file will expired at <strong>{{ $file->expired_at->format('Y-m-d H:i') }}</strong>.</p>
+			</div>
+		@endif
+
 		<a href="{{ route('file.download', $file->uuid) }}">
 			<h1 style="margin-bottom:20px">
 				@if (array_key_exists($file->extension, config('file.mimes')))
@@ -48,11 +55,11 @@
 	<div class="clearfix" style="margin-bottom: 20px"></div>
 
 	<hr>
-	@if(! empty($imagePath))
-	<div class="form-group">
-		<label for="file">Direct Path</label>
-		<input type="text" class="form-control" value="{{ $imagePath }}">
-	</div>
+	@if($file->type == 'image')
+		<div class="form-group">
+			<label for="file">Direct Path</label>
+			<input type="text" class="form-control" value="{{ asset(preg_replace('/\/{2,}/', '', Storage::url($file->path))) }}">
+		</div>
 	@endif
 
 	<div class="form-group">
@@ -70,17 +77,20 @@
 		<input type="text" class="form-control" value="[url={{ $file->download }}]Download {{ $file->label }}[/url]">
 	</div>
 
-	<form action="{{ route('file.delete', $file->uuid) }}" method="post">
-		{{ csrf_field() }}
-		{{ method_field('delete') }}
+	@if (auth()->check())
+		<form action="{{ route('file.delete', $file->uuid) }}" method="post">
+			{{ csrf_field() }}
+			{{ method_field('delete') }}
 
-		<div class="form-group">
-			<button class="btn btn-danger">
-				<i class="fa fa-times"></i>
-				Delete File
-			</button>
-		</div>
-	</form>
+			<div class="form-group">
+				<button class="btn btn-danger">
+					<i class="fa fa-times"></i>
+					Delete File
+				</button>
+			</div>
+		</form>
+	@endif
+
 </div>
 
 <div class="modal fade" tabindex="-1" id="reportFile" role="dialog">

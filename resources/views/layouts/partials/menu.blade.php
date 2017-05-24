@@ -2,8 +2,8 @@
     <button type="button" class="overlay-close"><i class="fa fa-times" aria-hidden="true"></i></button>
     <nav>
         <ul>
-            <li><a href="{{ route('file.index') }}">Catalog</a></li>
-            <li><a href="{{ route('upload.form') }}">Upload</a></li>
+            <li><a href="{{ route('file.index') }}">File Catalog</a></li>
+            <li><a href="{{ route('upload.form') }}">Upload File</a></li>
 
             @if (auth()->check())
                 <li><a href="{{ route('file.me') }}">My Files</a></li>
