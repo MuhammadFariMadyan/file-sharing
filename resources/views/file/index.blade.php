@@ -17,6 +17,13 @@
 			</form>
 		</div>
 
+		@if ($files->total() <= 0)
+			<div class="alert alert-info">
+				<strong>Information</strong>
+				<p>No file uploaded at this time.</p>
+			</div>
+		@endif
+
 		@foreach ($files as $file)
 			<div class="row">
 				<div class="col-xs-2">

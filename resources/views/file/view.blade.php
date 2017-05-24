@@ -58,7 +58,7 @@
 	@if($file->type == 'image')
 		<div class="form-group">
 			<label for="file">Direct Path</label>
-			<input type="text" class="form-control" value="{{ asset(preg_replace('/\/{2,}/', '', Storage::url($file->path))) }}">
+			<input type="text" class="form-control" value="{{ asset(preg_replace('/\/{2,}/', '/', Storage::url($file->path))) }}">
 		</div>
 	@endif
 

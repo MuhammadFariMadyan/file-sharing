@@ -60,7 +60,7 @@
         <!-- //js -->
 
         <!--js for bootstrap working-->
-        <script src="{{ asset('js/bootstrap.js') }}"></script>
+        <script src="{{ mix('js/bootstrap.js') }}"></script>
         <!-- //for bootstrap working -->
 
 
