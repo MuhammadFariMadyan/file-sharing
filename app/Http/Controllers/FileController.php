@@ -43,7 +43,7 @@ class FileController extends Controller
             ->withTitle('My Uploaded Files');
     }
 
-    public function view($uuid = null)
+    public function view($uuid)
     {
         $file = File::whereUuid($uuid)
             ->withCount('downloads')
@@ -58,14 +58,12 @@ class FileController extends Controller
         }
 
         return view('file.view', compact('file', 'imagePath'))
-            ->withTitle($file->label);
+            ->withTitle(sprintf('Download file %s', $file->label));
     }
 
-    public function download($uuid = ull)
+    public function download($uuid)
     {
-        $file = File::whereUuid($uuid)->first();
-
-        abort_if(empty($file), 404, 'File not found or has been deleted.');
+        $file = File::getByUuid($uuid);
 
         // confirm password?
         $authorized = Session::get('file.' . $file->uuid);
