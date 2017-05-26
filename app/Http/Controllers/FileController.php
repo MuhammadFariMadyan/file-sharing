@@ -89,7 +89,7 @@ class FileController extends Controller
 
         abort_if(empty($file), 404, 'File not found or has been deleted.');
 
-        if (!Auth::check() or $file->user_id != Auth::id()) {
+        if (!Auth::check() or Auth::user()->can('delete', File::class)) {
             abort(403, 'You don\'t have permission to delete this file.');
         }
 

@@ -12,6 +12,8 @@ class ReportController extends Controller
 {
     public function index()
     {
+        abort_if(!Auth::user()->can('view', FileReport::class), 403, trans('http.403'));
+
         $reports = FileReport::orderBy('created_at', 'ASC')
             ->with('file', 'user')
             ->paginate();
@@ -22,6 +24,8 @@ class ReportController extends Controller
 
     public function submit(ReportRequest $request, $uuid)
     {
+        abort_if(!Auth::user()->can('create', FileReport::class), 403, trans('http.403'));
+
         // check file first
         $file = File::getByUuid($uuid);
 

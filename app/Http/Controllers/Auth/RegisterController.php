@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\User\Role;
+use App\User\RoleUser;
+use DB;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
 
@@ -40,6 +43,18 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        abort_if(Role::count() <= 0, 500, 'Roles is not available in application.');
+
+        return view('auth.register');
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
@@ -50,7 +65,6 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            // 'password' => 'required|string|min:6|confirmed',
             'password' => 'required|string|min:6',
         ]);
     }
@@ -63,12 +77,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'quota' => config('file.default_quota'),
-            'size' => config('file.default_size'),
-        ]);
+        return DB::transaction(function () use ($data) {
+            // create user data
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'quota' => config('file.default_quota'),
+                'size' => config('file.default_size'),
+            ]);
+
+            // assign as uploader
+            RoleUser::create([
+                'user_id' => $user->id,
+                'role_id' => Role::whereSlug('uploader')->first()->id,
+            ]);
+
+            return $user;
+        });
     }
 }

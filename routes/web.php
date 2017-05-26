@@ -37,7 +37,7 @@ Route::post('upload/expiration', 'UploadController@expiration')->name('upload.ex
 
 // @File\ReportController
 Route::group(['namespace' => 'File', 'as' => 'report.'], function () {
-    Route::get('reports', 'ReportController@index')->name('index');
+    Route::get('reports', 'ReportController@index')->name('index')->middleware('auth');
     Route::post('report/{uuid}', 'ReportController@submit')->name('submit');
 });
 
