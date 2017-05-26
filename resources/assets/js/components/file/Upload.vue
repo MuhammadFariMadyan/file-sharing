@@ -59,6 +59,8 @@
 				<i v-if="loading" class="fa fa-spin fa-spinner"></i>
 			</button>
 		</div>
+
+		<p class="rule">By upload file, you agree with <a href="/rules" target="_blank">terms and conditions <i class="fa fa-external-link fa-fw"></i>.</a></p>
 	</form>
 </template>
 
@@ -152,6 +154,10 @@
 
 <style scoped>
 	#dropzone {
+		margin-bottom: 20px;
+	}
+
+	.rule {
 		margin-bottom: 20px;
 	}
 </style>

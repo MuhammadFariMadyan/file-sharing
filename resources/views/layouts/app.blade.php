@@ -1,3 +1,4 @@
+
 <!--
     Author: W3layouts
     Author URL: http://w3layouts.com
@@ -17,10 +18,10 @@
 
         <!-- Custom Theme files -->
         <link href="{{ mix('css/bootstrap.css') }}" type="text/css" rel="stylesheet" media="all">
-        <link href="{{ asset('css/style11.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/style11.css', app()->environment('production')) }}" rel="stylesheet" type="text/css" />
         <!-- menu style sheet -->
 
-        <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet" media="all">
+        <link href="{{ asset('css/style.css', app()->environment('production')) }}" type="text/css" rel="stylesheet" media="all">
         <!-- //Custom Theme files -->
 
         <!-- font-awesome icons -->
@@ -64,19 +65,19 @@
         <!-- //for bootstrap working -->
 
 
-        <script src="{{ asset('js/jquery.nicescroll.js') }}"></script>
-        <script src="{{ asset('js/scripts.js') }}"></script>
+        <script src="{{ asset('js/jquery.nicescroll.js', app()->environment('production')) }}"></script>
+        <script src="{{ asset('js/scripts.js', app()->environment('production')) }}"></script>
 
-        <script src="{{ asset('js/SmoothScroll.min.js') }}"></script>
+        <script src="{{ asset('js/SmoothScroll.min.js'), app()->environment('production') }}"></script>
 
         <!--menu script-->
-        <script type="text/javascript" src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
-        <script src="{{ asset('js/classie.js') }}"></script>
-        <script src="{{ asset('js/demo1.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/modernizr-2.6.2.min.js', app()->environment('production')) }}"></script>
+        <script src="{{ asset('js/classie.js', app()->environment('production')) }}"></script>
+        <script src="{{ asset('js/demo1.js', app()->environment('production')) }}"></script>
         <!--//menu script-->
 
         <!-- banner -->
-        <script type='text/javascript' src='{{ asset('js/jquery.easing.1.3.js') }}'></script>
+        <script type='text/javascript' src='{{ asset('js/jquery.easing.1.3.js', app()->environment('production')) }}'></script>
         <!-- //banner -->
 
         <script type="text/javascript">

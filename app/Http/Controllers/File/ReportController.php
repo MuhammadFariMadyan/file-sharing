@@ -10,6 +10,16 @@ use Auth;
 
 class ReportController extends Controller
 {
+    public function index()
+    {
+        $reports = FileReport::orderBy('created_at', 'ASC')
+            ->with('file', 'user')
+            ->paginate();
+
+        return view('file.report.index', compact('reports'))
+            ->withTitle('File Reports');
+    }
+
     public function submit(ReportRequest $request, $uuid)
     {
         // check file first

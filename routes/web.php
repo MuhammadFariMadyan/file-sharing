@@ -35,7 +35,11 @@ Route::post('upload/save', 'UploadController@save')->name('upload.save');
 Route::post('upload/size', 'UploadController@size')->name('upload.size');
 Route::post('upload/expiration', 'UploadController@expiration')->name('upload.expiration');
 
-Route::post('file/report/{uuid}', 'File\ReportController@submit')->name('report.submit');
+// @File\ReportController
+Route::group(['namespace' => 'File', 'as' => 'report.'], function () {
+    Route::get('reports', 'ReportController@index')->name('index');
+    Route::post('report/{uuid}', 'ReportController@submit')->name('submit');
+});
 
 Route::get('rules', 'PageController@rule')->name('page.rule');
 
