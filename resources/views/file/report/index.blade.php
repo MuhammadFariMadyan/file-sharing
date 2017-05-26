@@ -8,10 +8,11 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>File Label</th>
 					<th>Reporter</th>
+					<th>File Label</th>
 					<th>Reported at</th>
 					<th>Message</th>
+					<th>Status</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -36,6 +37,7 @@
 						</td>
 						<td>{{ $report->message }}</td>
 						<td>{{ $report->created_at->format('Y-m-d H:i') }}</td>
+						<td>{{ ucwords($report->status ) }}</td>
 						<td>
 							<a href="#" class="btn btn-xs btn-danger" title="Delete file forever">
 								<i class="fa fa-trash fa-fw"></i>

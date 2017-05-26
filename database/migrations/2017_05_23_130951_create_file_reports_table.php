@@ -20,6 +20,12 @@ class CreateFileReportsTable extends Migration
             $table->unsignedInteger('user_id')->nullable()->default(null);
             $table->string('name', 50)->nullable()->default(null);
             $table->string('email', 100)->nullable()->default(null);
+            $table->enum('status', [
+                'pending',
+                'processing',
+                'deleted',
+                'rejected',
+            ])->default('pending');
             $table->text('message');
             $table->timestamps();
         });
